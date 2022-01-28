@@ -1,0 +1,28 @@
+﻿@using CursoNetCore.Clases
+@model IEnumerable<PersonaCLS>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<table class="table">
+    <thead class="thread-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.NombreCompleto)<</th>
+            <th>@Html.DisplayNameFor(model => model.Mail)<</th>
+            <th>@Html.DisplayNameFor(model => model.Sexo)<</th>
+        </tr>
+
+    </thead>
+    <tbody>
+
+        @foreach (PersonaCLS item in Model)
+        {
+        <tr>
+            <td>@item.NombreCompleto</td>
+            <td>@item.Mail</td>
+            <td>@item.Sexo</td>
+        </tr>
+        }
+        </tbody>
+    </table>
+

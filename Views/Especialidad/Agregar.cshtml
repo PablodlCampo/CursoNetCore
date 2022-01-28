@@ -1,0 +1,29 @@
+﻿@using CursoNetCore.Clases
+@model EspecialidadCLS
+@{
+}
+
+<h1>Agregar</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Agregar" method="post" asp-controller="Especialidad">
+            <div class="form-group">
+                <label asp-for="Nombre"></label>
+                <input asp-for="Nombre" class="form form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Descripcion"></label>
+                <input asp-for="Descripcion" class="form form-control" />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary"/>
+                <a asp-action="Index" class="btn btn-danger">Regresar</a>
+            </div>
+        </form>
+    </div>
+</div>

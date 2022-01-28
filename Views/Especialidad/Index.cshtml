@@ -1,0 +1,36 @@
+﻿@using CursoNetCore.Clases
+@model IEnumerable<EspecialidadCLS>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<a class="btn btn-secondary" asp-action="Agregar"  asp-controller="Especialidad">Agregar</a>
+<form asp-controller="Especialidad" asp-action="Index" method="post" class="mb-2"
+        style="display:grid;grid-template-columns: 1fr 2fr 1fr 1fr" id="frmFormulario">
+    <label> Ingrese nombre de especialidad</label>
+    <input type="text" name="nombre" class="form-control" value="nombre" />
+    <input type="submit" name="nombre" class="btn btn-info" value="Buscar" />
+    <input type="button" name="nombre" class="btn btn-danger" value="nombre" />
+</form>
+
+<table class="table">
+    <thead class="thread-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.IdEspecialidad)</th>
+            <th>@Html.DisplayNameFor(model => model.Nombre)<</th>
+            <th>@Html.DisplayNameFor(model => model.Descripcion)<</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (EspecialidadCLS item in Model)
+	    {
+		    <tr>
+                <td>@item.IdEspecialidad</td>
+                <td>@item.Nombre</td>
+                <td>@item.Descripcion</td>
+            </tr>
+	    }
+    </tbody>
+</table>
+
