@@ -10,10 +10,11 @@ namespace CursoNetCore.Controllers
 {
     public class EspecialidadController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(EspecialidadCLS especialidad)
         {
-            IEnumerable<EspecialidadCLS> especialidades = GetEspecialidades();
+            IEnumerable<EspecialidadCLS> especialidades = GetEspecialidades(especialidad);
 
+            ViewBag.NombreEspecialidad = especialidad.Nombre;
 
             return View(especialidades);
         }
@@ -30,14 +31,15 @@ namespace CursoNetCore.Controllers
             return especialidads;
         }
 
-        public List<EspecialidadCLS> GetEspecialidades()
+        public List<EspecialidadCLS> GetEspecialidades(EspecialidadCLS especialidadFilter)
         {
-            List<EspecialidadCLS> especialidads = null;
+            List<EspecialidadCLS> especialidadList = null;
 
             using (BDHospitalContext bd = new BDHospitalContext())
             {
-                especialidads = (from especialidad in bd.Especialidad
-                                 where especialidad.Bhabilitado == 1
+                especialidadList = (from especialidad in bd.Especialidad
+                                 where especialidad.Bhabilitado == 1 && (especialidad.Nombre.Contains(especialidadFilter.Nombre) || 
+                                                                              string.IsNullOrEmpty(especialidadFilter.Nombre))
                                  select new EspecialidadCLS
                                  {
                                      IdEspecialidad = especialidad.Iidespecialidad,
@@ -46,7 +48,7 @@ namespace CursoNetCore.Controllers
                                  }).ToList();
             }
 
-            return especialidads;
+            return especialidadList;
         }
 
         public IActionResult Agregar()

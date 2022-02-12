@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    string nombreEspecialidad = ViewBag.MensajeBuscar;
 }
 
 <h1>Index</h1>
@@ -9,39 +10,63 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IdPagina)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Accion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Controlador)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdPagina)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Accion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Controlador)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<form asp-controller="Pagina" asp-action="Index" method="post" class="mb-2"
+      style="display:grid;grid-template-columns: 1fr 2fr 1fr 1fr" id="frmFormulario">
+    <label> Ingrese nombre de especialidad</label>
+    <input type="text" name="mensaje" class="form-control" value="@nombreEspecialidad" id="nombreBuscar" />
+    <input type="submit" class="btn btn-info" value="Buscar" />
+    <input type="button" class="btn btn-danger" value="Limpiar" onclick="Limpiar()" />
+</form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdPagina)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mensaje)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Accion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Controlador)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdPagina)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mensaje)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Accion)
+                </td>
+                <th>
+                    @Html.DisplayFor(modelItem => item.Controlador)
+                </th>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+
+<script>
+    function Limpiar() {
+        document.getElementById("nombreBuscar").value = "";
+        document.getElementById("frmFormulario").submit();
+    }
+</script>

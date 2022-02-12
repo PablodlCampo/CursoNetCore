@@ -2,15 +2,17 @@
 @model IEnumerable<EspecialidadCLS>
 @{
     ViewData["Title"] = "Index";
+
+    string nombreEspecialidad = ViewBag.NombreEspecialidad;
 }
 
 <a class="btn btn-secondary" asp-action="Agregar"  asp-controller="Especialidad">Agregar</a>
 <form asp-controller="Especialidad" asp-action="Index" method="post" class="mb-2"
         style="display:grid;grid-template-columns: 1fr 2fr 1fr 1fr" id="frmFormulario">
     <label> Ingrese nombre de especialidad</label>
-    <input type="text" name="nombre" class="form-control" value="nombre" />
-    <input type="submit" name="nombre" class="btn btn-info" value="Buscar" />
-    <input type="button" name="nombre" class="btn btn-danger" value="nombre" />
+    <input type="text" name="nombre" class="form-control" value="@nombreEspecialidad" id="nombreBuscar"/>
+    <input type="submit"  class="btn btn-info" value="Buscar" />
+    <input type="button" class="btn btn-danger" value="Limpiar" onclick="Limpiar()" />
 </form>
 
 <table class="table">
@@ -34,3 +36,10 @@
     </tbody>
 </table>
 
+
+<script>
+    function Limpiar() {
+        document.getElementById("nombreBuscar").value = "";
+        document.getElementById("frmFormulario").submit();
+    }
+</script>

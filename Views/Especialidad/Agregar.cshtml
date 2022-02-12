@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="Agregar" method="post" asp-controller="Especialidad">
+        <form asp-action="Agregar" method="post" asp-controller="Especialidad" id="formEspecialidad">
             <div class="form-group">
                 <label asp-for="Nombre"></label>
                 <input asp-for="Nombre" class="form form-control" />
@@ -21,9 +21,22 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary"/>
+                <input type="button"
+                       onclick="Guardar()"
+                       value="Crear"
+                       class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-danger">Regresar</a>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+    function Guardar() {
+        modalGuardar().then((result) => {
+            if (result.value) {
+                $("#formEspecialidad").submit();
+            }
+        })
+    }
+</script>

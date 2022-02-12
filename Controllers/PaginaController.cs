@@ -1,24 +1,24 @@
 ﻿using CursoNetCore.Clases;
 using CursoNetCore.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CursoNetCore.Controllers
 {
     public class PaginaController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(PaginaCLS paginaFilter)
         {
             List<PaginaCLS> paginas = new List<PaginaCLS>();
 
             using (BDHospitalContext bd = new BDHospitalContext())
             {
                 paginas = (from pagina in bd.Pagina
-                          where pagina.Bhabilitado == 1
-                          select new PaginaCLS()
+                          where pagina.Bhabilitado == 1 && 
+                              (string.IsNullOrEmpty(paginaFilter.Mensaje) ||
+                              pagina.Mensaje.Contains(paginaFilter.Mensaje))
+                           select new PaginaCLS()
                           {
                               IdPagina = pagina.Iidpagina,
                               Accion = pagina.Accion,
@@ -27,7 +27,14 @@ namespace CursoNetCore.Controllers
                           }).ToList();
             }
 
+            ViewBag.MensajeBuscar = paginaFilter.Mensaje;
+
             return View(paginas);
+        }
+        public IActionResult Agregar() 
+        {
+
+            return View();
         }
     }
 }
