@@ -1,6 +1,7 @@
 ﻿using CursoNetCore.Clases;
 using CursoNetCore.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,6 +36,41 @@ namespace CursoNetCore.Controllers
         {
 
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Agregar(PaginaCLS pagina)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(pagina);
+                }
+                else
+                {
+                    using (BDHospitalContext bd = new BDHospitalContext())
+                    {
+                        Pagina paginaInsert = new Pagina();
+                        paginaInsert.Mensaje = pagina.Mensaje;
+                        paginaInsert.Controlador = pagina.Controlador;
+                        paginaInsert.Accion = pagina.Accion;
+                        paginaInsert.Bhabilitado = 1;
+
+                        bd.Add<Pagina>(paginaInsert);
+                        bd.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+
+                return View(pagina);
+            }
+
+
+            return RedirectToAction("Index");
         }
     }
 }

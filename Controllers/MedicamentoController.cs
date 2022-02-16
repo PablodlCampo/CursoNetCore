@@ -34,7 +34,7 @@ namespace CursoNetCore.Controllers
             return View(medicamentos);
         }
 
-        public List<SelectListItem> ListaFormaFarmaceutica()
+        public List<SelectListItem> ListaFormaFarmaceutica(int selectedId = 1)
         {
             List<SelectListItem> formaFarmaceutica = new List<SelectListItem>();
 
@@ -45,7 +45,8 @@ namespace CursoNetCore.Controllers
                                      select new SelectListItem
                                      {
                                         Text = FormaFarmaceutica.Nombre,
-                                        Value = FormaFarmaceutica.Iidformafarmaceutica.ToString()
+                                        Value = FormaFarmaceutica.Iidformafarmaceutica.ToString(),
+                                        Selected = FormaFarmaceutica.Iidformafarmaceutica == selectedId,
                                      }).ToList();
             }
 
@@ -59,29 +60,72 @@ namespace CursoNetCore.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Agregar(MedicamentoCLS medicamento)
+        public IActionResult Editar(int id)
         {
+            MedicamentoCLS medicamentoInsert;
+
+            using (BDHospitalContext bd = new BDHospitalContext())
+            {
+                medicamentoInsert = (from Medicamento in bd.Medicamento
+                                     join ffarmaceutica in bd.FormaFarmaceutica
+                                     on Medicamento.Iidformafarmaceutica equals ffarmaceutica.Iidformafarmaceutica
+                                     where Medicamento.Iidmedicamento == id
+                                     select new MedicamentoCLS
+                                     {
+                                         IdMedicamento = Medicamento.Iidmedicamento,
+                                         Nombre = Medicamento.Nombre,
+                                         NombreFarmaceutica = ffarmaceutica.Nombre,
+                                         Precio = (decimal)Medicamento.Precio,
+                                         Stock = (int)Medicamento.Stock,
+                                         IdFormaFarmaceutica = (int)Medicamento.Iidformafarmaceutica,
+                                     }).FirstOrDefault();
+            }
+
+            ViewBag.listaFarmaceutica = ListaFormaFarmaceutica(medicamentoInsert.IdFormaFarmaceutica);
+
+            return View(medicamentoInsert);
+        }
+
+        [HttpPost]
+        public IActionResult Guardar(MedicamentoCLS medicamento)
+        {
+            string nombreVista = medicamento.IdMedicamento == 0 ? "Agregar" : "Editar";
+
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    return View(medicamento);
+                    return View(nombreVista, medicamento);
                 }
                 else
                 {
                     using (BDHospitalContext bd = new BDHospitalContext())
                     {
-                        Medicamento medicamentoInsert = new Medicamento();
-                        medicamentoInsert.Nombre = medicamento.Nombre;
-                        medicamentoInsert.Precio = medicamento.Precio;
-                        medicamentoInsert.Stock = medicamento.Stock;
-                        medicamentoInsert.Presentacion = medicamento.Presentacion;
-                        medicamentoInsert.Concentracion = medicamento.Concentracion;
-                        medicamentoInsert.Iidformafarmaceutica = medicamento.IdFormaFarmaceutica;
-                        medicamentoInsert.Bhabilitado = 1;
 
-                        bd.Add<Medicamento>(medicamentoInsert);
+                        if (medicamento.IdMedicamento == 0)
+                        {
+                            Medicamento medicamentoInsert = new Medicamento();
+                            medicamentoInsert.Nombre = medicamento.Nombre;
+                            medicamentoInsert.Precio = medicamento.Precio;
+                            medicamentoInsert.Stock = medicamento.Stock;
+                            medicamentoInsert.Presentacion = medicamento.Presentacion;
+                            medicamentoInsert.Concentracion = medicamento.Concentracion;
+                            medicamentoInsert.Iidformafarmaceutica = medicamento.IdFormaFarmaceutica;
+                            medicamentoInsert.Bhabilitado = 1;
+
+                            bd.Add<Medicamento>(medicamentoInsert);
+                        }
+                        else
+                        {
+                            Medicamento medicamentoInsert = bd.Medicamento.FirstOrDefault(e => e.Iidmedicamento == medicamento.IdMedicamento);
+                            medicamentoInsert.Nombre = medicamento.Nombre;
+                            medicamentoInsert.Precio = medicamento.Precio;
+                            medicamentoInsert.Stock = medicamento.Stock;
+                            medicamentoInsert.Presentacion = medicamento.Presentacion;
+                            medicamentoInsert.Concentracion = medicamento.Concentracion;
+                            medicamentoInsert.Iidformafarmaceutica = medicamento.IdFormaFarmaceutica;
+                        }
+
                         bd.SaveChanges();
                     }
                 }

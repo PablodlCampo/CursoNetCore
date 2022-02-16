@@ -27,19 +27,36 @@
     <tbody>
         @foreach (EspecialidadCLS item in Model)
 	    {
-		    <tr>
-                <td>@item.IdEspecialidad</td>
-                <td>@item.Nombre</td>
-                <td>@item.Descripcion</td>
-            </tr>
+        <tr>
+            <td>@item.IdEspecialidad</td>
+            <td>@item.Nombre</td>
+            <td>@item.Descripcion</td>
+            <td><a class="btn btn-primary" name= "idEspecialidad" asp-controller="Especialidad" asp-action="Editar" asp-route-id="@item.IdEspecialidad">Editar</a></td>
+            <td><button class="btn btn-danger" onclick="EliminarEspecialidad(@item.IdEspecialidad)">Eliminar</button></td>
+        </tr>
 	    }
     </tbody>
 </table>
 
+<form asp-controller="Especialidad" asp-action="Eliminar" method="post" class="mb-2"
+    style="display:grid;grid-template-columns: 1fr 2fr 1fr 1fr" id="frmEliminar">
+    <input type="hidden" name="idEspecialidad" id="textIdExpecialidad" />
+</form>
 
 <script>
     function Limpiar() {
         document.getElementById("nombreBuscar").value = "";
         document.getElementById("frmFormulario").submit();
+    }
+
+    function EliminarEspecialidad(idEspecialidad) {
+        document.getElementById("textIdExpecialidad").value = idEspecialidad;
+
+        modalGuardar().then((result) => {
+            if (result.isConfirmed) {
+                $("#frmEliminar").submit();
+                //document.getElementById("frmEliminar").submit();
+            }
+        })
     }
 </script>

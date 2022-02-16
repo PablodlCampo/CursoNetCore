@@ -49,9 +49,7 @@
                 @Html.DisplayFor(modelItem => item.NombreFarmaceutica)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                 <td><a class="btn btn-primary" asp-controller="Medicamento" asp-action="Editar" asp-route-id="@item.IdMedicamento">Editar</a></td>
             </td>
         </tr>
 }

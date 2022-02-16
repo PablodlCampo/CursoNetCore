@@ -1,0 +1,76 @@
+﻿@model CursoNetCore.Clases.PersonaCLS
+
+@{
+    ViewData["Title"] = "Agregar";
+
+    var listaSexo = ViewBag.Llenarsexo;
+}
+
+<h1>Agregar</h1>
+
+<h4>PersonaCLS</h4>
+<hr />
+
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Agregar" id="frmEnviar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Apaterno" class="control-label"></label>
+                <input asp-for="Apaterno" class="form-control" />
+                <span asp-validation-for="Apaterno" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amaterno" class="control-label"></label>
+                <input asp-for="Amaterno" class="form-control" />
+                <span asp-validation-for="Amaterno" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TelefonoFijo" class="control-label"></label>
+                <input asp-for="TelefonoFijo" class="form-control" />
+                <span asp-validation-for="TelefonoFijo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TelefonoCelular" class="control-label"></label>
+                <input asp-for="TelefonoCelular" class="form-control" />
+                <span asp-validation-for="TelefonoCelular" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FechaNacimiento" class="control-label"></label>
+                <input asp-for="FechaNacimiento" class="form-control" />
+                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mail" class="control-label"></label>
+                <input asp-for="Mail" class="form-control" />
+                <span asp-validation-for="Mail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdSexo" class="control-label"></label>
+                <select asp-for="IdSexo" class="form-control" asp-items="@listaSexo"></select>
+                <span asp-validation-for="IdSexo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="button" value="Guardar" class="btn btn-primary" onclick="Guardar()"/>
+                <a asp-action="Index" class="btn btn-danger" asp-controller="Persona">Regresar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function Guardar() {
+        modalGuardar().then((result) => {
+            if (result.value) {
+                $("#frmEnviar").submit();
+            }
+        })
+    }
+</script>
